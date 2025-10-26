@@ -13,7 +13,7 @@ const App = () => {
         setContent('HAMI test passed');
     })();
     return (
-        <div className="bg-slate-900 text-white p-4">
+        <div className="p-4">
             <h2 className="text-2xl font-bold">Content from React</h2>
             <p>{content}</p>
         </div>
