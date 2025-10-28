@@ -4,8 +4,8 @@ HAMI Electron needs a foundational state management system to persist applicatio
 Reference: See hami-cli patterns in `https://github.com/KMaheshBhat/hami/blob/main/apps/hami-cli/src/ops/config-get-flow.ts` and `https://github.com/KMaheshBhat/hami/blob/main/apps/hami-cli/src/index.ts`
 
 ## Goals / Non-Goals
-- Goals: Provide centralized state persistence, use HAMI core plugins, enable future features
-- Non-Goals: Business logic, UI components, specific application features
+- Goals: Provide centralized state persistence, use HAMI core plugins, enable future features, maintain separation of concerns
+- Non-Goals: Business logic, UI components, specific application features, domain-specific state validation
 
 ## Decisions
 - Decision: Use core-fs plugin for file I/O operations (read-file, write-file nodes)
@@ -16,14 +16,17 @@ Reference: See hami-cli patterns in `https://github.com/KMaheshBhat/hami/blob/ma
 ## Implementation Approach
 
 ### State File Structure
-Store state in `$USER/.hami/index.json` with structure:
+Store state in `$USER/.hami/index.json` with generic structure:
 ```json
 {
   "workingDirectories": ["path/to/dir1", "path/to/dir2"],
   "activeWorkingDirectory": "path/to/dir1",
-  "preferences": {}
+  "preferences": {},
+  "otherDomains": "any structure"
 }
 ```
+
+The state is implemented as a generic `Record<string, any>` to support future domain-specific state without coupling the foundational state service to specific business logic. Domain-specific operations (working directories, preferences, etc.) are handled by separate services that utilize this generic state persistence layer.
 
 ### HAMIFlow Pattern Example
 

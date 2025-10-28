@@ -10,12 +10,15 @@ HAMI Electron builds on top of the HAMI framework, which is a modular, plugin-ba
 
 ## Features
 
-- **HAMI Integration**: Basic integration with the HAMI framework for workflow execution
+- **HAMI Integration**: Full integration with the HAMI framework for workflow execution
+- **State Management**: Centralized state persistence system for application data
 - **Electron Desktop App**: Cross-platform desktop application built with Electron
 - **React UI**: Modern user interface built with React and TypeScript
-- **Plugin Architecture**: Foundation for extending with HAMI plugins and custom workflows
+- **Plugin Architecture**: Extensible architecture supporting HAMI plugins and custom workflows
 
 ## Architecture
+
+For detailed architecture information including state management, HAMI framework integration, and technical implementation details, see [`openspec/project.md`](../openspec/project.md).
 
 ### Core Components
 
@@ -64,8 +67,9 @@ npm run make
 ```
 
 The application currently provides:
-- Basic HAMI framework integration with test nodes and flows
-- A React-based user interface demonstrating HAMI functionality
+- Full HAMI framework integration with state management system
+- Centralized state persistence to `$USER/.hami/index.json`
+- A React-based user interface with IPC communication
 - Foundation for building comprehensive workflow management features
 
 ### Integration with HAMI CLI
@@ -74,29 +78,16 @@ HAMI Electron complements the HAMI CLI tools. Use the CLI for advanced workflow 
 
 ## Development
 
-### Project Structure
+For detailed development information including project structure, build processes, and technical implementation details, see [`openspec/project.md`](../openspec/project.md).
 
-```
-hami-electron/
-├── src/
-│   ├── index.ts          # Electron main process
-│   ├── app.tsx           # React application
-│   ├── hami.ts           # HAMI integration classes
-│   └── preload.ts        # Preload script for secure IPC
-├── package.json
-├── tsconfig.json
-├── .eslintrc.json
-└── webpack.*.config.ts   # Build configurations
-```
-
-### Building
+### Quick Development Commands
 
 ```bash
-# Build all components
-npm run build
-
 # Lint code
 npm run lint
+
+# Build all components
+npm run build
 ```
 
 ### Contributing

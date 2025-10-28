@@ -48,6 +48,9 @@
   },
   "dependencies": {
     "@hami-frameworx/core": "^0.1.1",
+    "@hami-frameworx/core-fs": "^0.1.1",
+    "@hami-frameworx/core-config-fs": "^0.1.1",
+    "@hami-frameworx/core-trace-fs": "^0.1.1",
     "electron-squirrel-startup": "^1.0.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

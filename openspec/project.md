@@ -57,6 +57,59 @@ This project extends HAMI by providing a desktop GUI for workflow execution, mak
 - **Desktop Application**: Cross-platform compatibility (Windows, macOS, Linux) via Electron Forge
 - **TypeScript Strict Mode**: All code must pass strict TypeScript compilation
 
+## State Management Architecture
+
+The application implements a centralized state management system following HAMI framework patterns for persisting application data to `$USER/.hami/index.json`.
+
+### State Structure
+```typescript
+// Generic state container - specific domains handled by other services
+export type HAMIState = Record<string, any>;
+```
+
+### HAMI Framework Integration
+- **HAMINodes**: `StateReadNode` and `StateWriteNode` handle file I/O operations with proper lifecycle (`prep()`/`exec()`/`post()`)
+- **HAMIFlows**: `StateReadFlow` and `StateWriteFlow` orchestrate state operations with Node chaining and configuration validation
+- **Service Layer**: `StateManagementService` provides high-level API with event-driven notifications
+- **IPC Integration**: Electron IPC handlers enable secure renderer process access to state operations
+
+### File Organization
+```
+src/
+├── main.ts                # Electron main process
+├── registry/
+│   └── bootstrap.ts       # HAMI registry setup
+├── state/
+│   ├── index.ts           # Public API surface
+│   ├── service.ts         # State management service
+│   └── state.ts           # State types and validation
+├── ops/                   # HAMI operations (nodes and flows)
+│   ├── index.ts
+│   ├── state-read-node.ts
+│   ├── state-write-node.ts
+│   ├── state-read-flow.ts
+│   └── state-write-flow.ts
+├── ui/
+│   └── app.tsx            # React application
+├── ipc-handlers.ts        # IPC communication handlers
+└── renderer.ts            # Electron renderer entry
+```
+
+### Error Recovery
+- **Missing File**: Automatically creates with default state
+- **Corrupted JSON**: Backs up corrupted file and initializes with defaults
+- **Invalid Structure**: Validates state and falls back to defaults
+- **Atomic Writes**: Ensures data integrity during state persistence
+
+### IPC API
+The system provides IPC handlers for renderer process access:
+- `state:get` - Retrieve current state
+- `state:update` - Update state with partial changes
+- `state:update-key` - Update a specific state key
+- `state:get-key` - Get a specific state key
+
+Events are broadcast to renderer processes for state changes and initialization.
+
 ## External Dependencies
 - **@hami-frameworx/core**: Core HAMI framework library for workflow execution and plugin system
 - **Electron Ecosystem**: Electron Forge for packaging, various makers for platform-specific builds
